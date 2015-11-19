@@ -9,10 +9,12 @@ import json, sys, urllib, argparse
 
 #takes two date strings, returns most recent
 def mostRecent(d1, d2):
-	if parser.parse(d1) > parser.parse(d2):
-		return d1
-	else:
-		return d2
+	try:
+		if parser.parse(d1) > parser.parse(d2):
+			return d1
+	except:
+		pass
+	return d2
 
 
 def getlocation(ip):
