@@ -7,6 +7,8 @@ from os import path
 from dateutil import parser
 import json, sys, urllib, argparse
 
+
+
 #takes two date strings, returns most recent
 def mostRecent(d1, d2):
 	try:
@@ -31,12 +33,14 @@ def getlocation(ip):
 
 
 def main():
+
 	#take arguments
 	parser = argparse.ArgumentParser(description='Command Line Arguments')
 
 	parser.add_argument('-f', '--file', type=str, help='An optional input file path for log file')
 	parser.add_argument('-o', '--output', type=str, help='An optional output file argument')
 	parser.add_argument('-a', '--attempts', type=int, help='Limit output to multiple attempts only')
+	parser.add_argument('-v', '--valid', action='store_true', default=False, help='Output successful login attempts instead of unsuccessful')
 	args = parser.parse_args()
 
 	filterAttempts = 0
@@ -63,7 +67,7 @@ def main():
 
 	linesofinterest = dict()
 	for line in f:
-		if 'Invalid' in line:
+		if not args.valid and 'Invalid' in line:
 			datestamp = line[:15]
 			tmp = line[line.index('Invalid') + 13:]
 			username = tmp[:tmp.index(' from ')]
@@ -76,6 +80,19 @@ def main():
 				inc = (inc[0], inc[1] + 1, datestamp)
 				linesofinterest[ipaddress] = inc
 
+		elif args.valid and 'Accepted' in line:
+			datestamp = line[:15]
+			tmp = line[line.index('Accepted') + 22:]
+			username = tmp[:tmp.index(' from ')]
+			ipaddress = tmp[tmp.index(' from ') + 6:tmp.index(' port')]
+			while username[0] == ' ': username = username[1:]
+			if ipaddress not in linesofinterest:
+				linesofinterest.update({ipaddress:(username, 1, datestamp)})
+			else:
+				inc = linesofinterest[ipaddress]
+				datestamp = mostRecent(inc[2], datestamp)
+				inc = (inc[0], inc[1] + 1, datestamp)
+				linesofinterest[ipaddress] = inc
 	f.close()
 
 	linesofinterest = [(ip, linesofinterest[ip][0], linesofinterest[ip][1], linesofinterest[ip][2]) for ip in linesofinterest if linesofinterest[ip][1] > filterAttempts]
