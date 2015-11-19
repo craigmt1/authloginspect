@@ -78,15 +78,11 @@ def main():
 
 	f.close()
 
-	linesofinterest = [(ip, linesofinterest[ip][0], linesofinterest[ip][1], linesofinterest[ip][2]) for ip in linesofinterest]
+	linesofinterest = [(ip, linesofinterest[ip][0], linesofinterest[ip][1], linesofinterest[ip][2]) for ip in linesofinterest if linesofinterest[ip][1] > filterAttempts]
 	linesofinterest = sorted(linesofinterest,key=itemgetter(2),reverse=True)
 
 	for line in linesofinterest:
 		(ip, username, attempts, last) = line
-
-		if attempts < filterAttempts:
-			continue
-		
 		(city, country, coordinates) = getlocation(ip)
 
 		info = [\
