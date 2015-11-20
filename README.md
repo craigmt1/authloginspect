@@ -8,8 +8,8 @@ Known support for ubuntu and CentOS, possible support for other distros (SSH log
 
 Sample output (auth.log on ubuntu server between October and November of 2015)
 
-    Attacker IP list: http://pastebin.com/f3ecUhK0
+Attacker IP list: http://pastebin.com/f3ecUhK0
 
-    Attacker username list: http://pastebin.com/uGAGKeB6
+Attacker username list: http://pastebin.com/uGAGKeB6
 
-    Graphs generated from output data: http://imgur.com/a/spjvE
+Graphs generated from output data: http://imgur.com/a/spjvE
