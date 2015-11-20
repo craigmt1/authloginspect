@@ -1,4 +1,4 @@
-# breakinlog
+# authloginspect
 Parse and geolocate failed ssh login attempts from log file using http://freegeoip.net/json/
 
 Enter "python authloginspect.py -h" for help with console arguments.
